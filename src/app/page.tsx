@@ -21,6 +21,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section>
+        <h1>Work Dammit</h1>
+      </section>
     </div>
   );
 }
