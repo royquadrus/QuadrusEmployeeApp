@@ -58,7 +58,7 @@ export function NewDrawer({ isOpen, onOpenChange }: NewDrawerProps) {
                 entry_date: new Date(selectedDate + 'T00:00:00'),
             });
         }
-    }, [isOpen, selectedDate, form]);
+    }, [isOpen, selectedDate, selectedTimesheet, form]);
 
     const getProjectDisplayValue = (projectId: string | undefined) => {
         if (!projectId) return "No project";

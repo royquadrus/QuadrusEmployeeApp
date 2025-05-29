@@ -102,7 +102,7 @@ interface TimeclockState {
 
 export const useTimeclockStore = create<TimeclockState>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             // Initial state
             payPeriods: [],
             currentPayPeriod: null,

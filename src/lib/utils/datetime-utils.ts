@@ -57,8 +57,8 @@ export class DateTimeManager {
     /**
      * Convert UTC datetime from database to user's timzeon for display
      */
-    fromUTC(utcDate: Date | string, timezone?: string): Date {
-        const tz = timezone || this.defaultTimezone;
+    fromUTC(utcDate: Date | string/*, timezone?: string*/): Date {
+        //const tz = timezone || this.defaultTimezone;
         const dateObj = typeof utcDate === 'string' ? parseISO(utcDate) : utcDate;
 
         if (!isValid(dateObj)) {
@@ -131,8 +131,8 @@ export class DateTimeManager {
         };
 
         if (includeTime) {
-            formatOptions.hour = 'numeric',
-            formatOptions.minute = '2-digit',
+            formatOptions.hour = 'numeric';
+            formatOptions.minute = '2-digit';
             formatOptions.hour12 = true;
         }
 
@@ -187,7 +187,7 @@ export class DateTimeManager {
     /**
      * Get current date/time in user's timezone
      */
-    now(timezone?: string): Date {
+    now(/*timezone?: string*/): Date {
         return new Date();
     }
 
@@ -328,7 +328,7 @@ export const toUTC = (date: Date | string, timezone?: string) =>
     dateTime.toUTC(date, timezone);
 
 export const fromUTC = (date: Date | string, timezone?: string) =>
-    dateTime.fromUTC(date, timezone);
+    dateTime.fromUTC(date);
 
 export function useDateTime() {
     const [userTimezone, setUserTimezone] = useState(DEFAULT_TIMEZONE);
@@ -364,7 +364,7 @@ export function useDateTime() {
             dateTime.parseForStorage(dateInput, userTimezone, isDateOnly),
         parseDateTimeLocal: (dateTimeInput: string) =>
             dateTime.parseDateTimeLocal(dateTimeInput, userTimezone),
-        now: () => dateTime.now(userTimezone),
+        now: () => dateTime.now(),
         today: () => dateTime.today(userTimezone),
         getDurationInMinutes: (start: Date | string, end: Date | string) =>
             dateTime.getDurationInMinutes(start, end),

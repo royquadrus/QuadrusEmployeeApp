@@ -1,4 +1,3 @@
-import TimesheetsPage from "@/app/(protected-pages)/timesheets/page";
 import { withAuth } from "@/lib/api/with-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextResponse, type NextRequest } from "next/server";

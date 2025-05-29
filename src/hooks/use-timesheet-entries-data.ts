@@ -31,13 +31,11 @@ interface UseDailyPunchesReturn {
 export function useDailyPunches(): UseDailyPunchesReturn {
     const [clockIns, setClockIns] = useState<ClockInEntry[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const { selectedDate } = useTimeclockStore();
 
     const fetchClockIns = useCallback(async () => {
         try {
             setIsLoading(true);
-            setError(null);
 
             const response = await fetch(`/api/timeclock/get-daily-punches?day=${selectedDate}`);
 
@@ -59,7 +57,7 @@ export function useDailyPunches(): UseDailyPunchesReturn {
         // Only fetch if we have a selectedDate
         if (selectedDate) 
             fetchClockIns();
-    }, [fetchClockIns]);
+    }, [fetchClockIns, selectedDate]);
 
     return {
         clockIns,

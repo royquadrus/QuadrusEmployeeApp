@@ -29,7 +29,7 @@ export async function PUT(request: NextRequest) {
             
             const supabase = await createServerSupabaseClient();
 
-            const { error, data } = await supabase
+            const { error } = await supabase
                 .schema("hr")
                 .from("timesheet_entries")
                 .update(parsedData)
