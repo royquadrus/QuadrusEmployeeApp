@@ -11,7 +11,7 @@ interface TimesheetState {
 
 export const useTimesheetStore = create<TimesheetState>() (
     persist(
-        (set, get) => ({
+        (set) => ({
             selectedTimesheet: null,
             selectedTimesheetStatus: null,
 

@@ -6,7 +6,6 @@ import { useTimeclockData } from "@/hooks/use-timeclock-data";
 import { useSubmitTimesheet } from "@/hooks/use-timesheet-entries-data";
 import { useTimeclockStore } from "@/lib/stores/use-timeclock-store";
 import { dateTime } from "@/lib/utils/datetime-utils";
-import { AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function PayPeriodEntryList() {
@@ -69,21 +68,6 @@ export function PayPeriodEntryList() {
                     ? 'bg-green-500/50'
                     : 'bg-gray/50';
 
-    const getStatusIcon = (status: string | null, totalPunches: number) => {
-        if (!status) {
-            return <AlertCircle className="h-4 w-4 text-muted-foreground" />;
-        }
-
-        switch (status.toLowerCase()) {
-            case 'open':
-                return <Clock className="h-4 w-4 text-blue-500" />;
-            case 'submitted':
-                return <CheckCircle className="h-4 w-4 text-green-500" />;
-            default:
-                return <AlertCircle className="h-4 w-4 text-yellow-500" />;
-        }
-    };
-
     const handleCardClick = (date: string) => {
         setSelectedDate(date);
         router.push('/timeclock/timesheet/daily-detail');
@@ -132,7 +116,6 @@ export function PayPeriodEntryList() {
                     day: 'numeric'
                 });
 
-                const hasTimeEntries = day.total_punches > 0;
                 const isWeekend = date.getDay() === 0 || date.getDay() === 6;
 
                 return (

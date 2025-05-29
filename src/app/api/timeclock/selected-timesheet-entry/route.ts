@@ -1,7 +1,6 @@
 import { withAuth } from "@/lib/api/with-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { fullTimesheetEntrySchema } from "@/lib/validation/timeclock";
-import { format } from "date-fns";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {

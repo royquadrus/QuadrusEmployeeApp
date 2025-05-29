@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useDailyPunches, useTimesheetEntries } from "@/hooks/use-timesheet-entries-data";
+import { useDailyPunches } from "@/hooks/use-timesheet-entries-data";
 import { useTimeclockStore } from "@/lib/stores/use-timeclock-store";
 import { format } from "date-fns";
 import { EditDrawer } from "./edit-drawer";
@@ -16,7 +16,7 @@ export function DailyPunchesList() {
     const { selectedDate, setSelectedEntry } = useTimeclockStore();
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
     const [isNewDrawerOpen, setIsNewDrawerOpen] = useState(false);
-    const { selectedTimesheet, selectedTimesheetStatus } = useTimesheetStore();
+    const { selectedTimesheetStatus } = useTimesheetStore();
 
     const isTimesheetLocked = selectedTimesheetStatus === 'Approved' || selectedTimesheetStatus === 'Submitted';
 
@@ -81,7 +81,7 @@ export function DailyPunchesList() {
         <div className="space-y-4">
             <div className="items-center">
                 <h2 className="text-3xl font-bold text-center">{format(new Date(selectedDate + 'T00:00:00'), 'iii. MMM, d')}</h2>
-                <h3 className="text-lg font-semibold text-center">{format(new Date(selectedDate + 'T00:00:00'), 'EEEE')}'s Clock In's</h3>
+                <h3 className="text-lg font-semibold text-center">{format(new Date(selectedDate + 'T00:00:00'), 'EEEE')}&apos;s Clock In&apos;s</h3>
             </div>
 
             {clockIns.length === 0 ? (

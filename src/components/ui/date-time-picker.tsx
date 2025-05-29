@@ -50,7 +50,7 @@ export const DateTimePicker = forwardRef<HTMLButtonElement, DateTimePickerProps>
             if (!onChange) return;
 
             const currentDate = value || new Date();
-            let newDate = new Date(currentDate);
+            const newDate = new Date(currentDate);
 
             if (type === "hour") {
                 const hour = parseInt(timeValue, 10);

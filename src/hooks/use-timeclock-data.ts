@@ -1,7 +1,7 @@
 import { ActiveEntry, Project, Task, Timesheet, useTimeclockStore } from "@/lib/stores/use-timeclock-store";
 import { useTimesheetStore } from "@/lib/stores/use-timesheet-store";
 import { PayPeriod } from "@/lib/validation/bak-timesheet";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 
 export function useTimeclockData() {
@@ -11,7 +11,6 @@ export function useTimeclockData() {
         currentPayPeriod,
         selectedPayPeriod,
         currentTimesheet,
-        selectedTimesheet,
         timesheetDays,
         activeEntry,
         projects,
@@ -157,7 +156,7 @@ export function useTimeclockData() {
         } finally {
             setLoading(false);
         }
-    }, [setTimesheetDays, setLoading, setError, clearError]);
+    }, [setTimesheetDays, setSelTimesheet, setSelectedTimesheetStatus, setSelectedTimesheet, setLoading, setError, clearError]);
 
     const fetchProjects = useCallback(async (): Promise<Project[]> => {
         try {
