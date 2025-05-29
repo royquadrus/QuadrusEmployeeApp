@@ -14,6 +14,9 @@ export async function GET(request: NextRequest) {
         try {
             const { searchParams } = new URL(request.url);
             const payPeriodId = searchParams.get('payPeriodId');
+            if (!payPeriodId) {
+                throw new Error();
+            }
             const userEmail = user.email;
 
             const supabase = await createServerSupabaseClient();
