@@ -10,18 +10,18 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Deploy to Production Server
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd /var/www/apps/employee-app-prod
-          git fetch origin
-          git reset --hard origin/main
-          npm ci
-          npm run build
-          pm2 restart employee-app-prod || pm2 start npm --name "employee-app-prod" -- start -- --port 3000
+    steps:
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /var/www/apps/employee-app-prod
+            git fetch origin
+            git reset --hard origin/main
+            npm ci
+            npm run build
+            pm2 restart employee-app-prod || pm2 start npm --name "employee-app-prod" -- start -- --port 3000
