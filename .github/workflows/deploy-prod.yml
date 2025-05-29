@@ -22,6 +22,6 @@ jobs:
             cd /var/www/apps/employee-app-prod
             git fetch origin
             git reset --hard origin/main
-            npm ci
+            npm ci -- legacy-peer-deps
             npm run build
             pm2 restart employee-app-prod || pm2 start npm --name "employee-app-prod" -- start -- --port 3000
