@@ -13,15 +13,13 @@ export const useGetInventoryOrders = () => {
             }
 
             const data = await response.json();
-            console.log("Hook data rcvd:", data);
             const parsed = GetInventoryOrdersSchema.safeParse(data);
 
             if (!parsed.success) {
                 console.error(parsed.error);
                 throw new Error("Invalid inventory order data");
             }
-
-            console.log("Hook Parsed:", parsed.data);
+            
             return parsed.data;
         },
         staleTime: 1000 * 60 * 5,

@@ -12,7 +12,6 @@ import { useState } from "react";
 import InventoryOrderSkeleton from "../../inventory-order-skeleton";
 import { useGetInventoryOrderItems } from "@/hooks/inventory/inventory-orders/use-get-inventory-order-items";
 import { useReceiveInventoryItem } from "@/hooks/inventory/inventory-orders/use-receive-inventory-item";
-import { ReceiveInventoryInput } from "@/lib/validation/inventory-order";
 import { useUpdateInventoryOrderStatus } from "@/hooks/inventory/inventory-orders/use-update-inventory-order-status";
 
 export default function ReceiveOrderPage() {
@@ -133,7 +132,7 @@ export default function ReceiveOrderPage() {
                             </DialogTrigger>
 
                             <DialogContent>
-                                <DialogHeader>Receive Item</DialogHeader>
+                                <DialogHeader>Receive Item {item.item_sku}</DialogHeader>
                                 {order.order_status === "Received" ? (
                                     <p className="text-sm text-muted-foreground">This order has already been received.</p>
                                 ) : (

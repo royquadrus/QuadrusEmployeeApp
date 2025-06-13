@@ -1,6 +1,6 @@
 import { withAuth } from "@/lib/api/with-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { ReceiveInventoryItemSchema } from "@/lib/validation/inventory-order";
+import { ShipInventoryItemSchema } from "@/lib/validation/inventory-return";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function PUT(request: NextRequest) {
@@ -11,7 +11,7 @@ export async function PUT(request: NextRequest) {
 
         try {
             const body = await request.json();
-            const parsed = ReceiveInventoryItemSchema.safeParse(body);
+            const parsed = ShipInventoryItemSchema.safeParse(body);
             if (!parsed.success) {
                 return NextResponse.json({ error: "Invalid input type" }, { status: 400 });
             }
@@ -20,21 +20,21 @@ export async function PUT(request: NextRequest) {
 
             const { data, error } = await supabase
                 .schema("inv")
-                .from("inventory_order_items")
+                .from("inventory_return_items")
                 .update(parsed.data)
-                .eq("inventory_order_item_id", parsed.data.inventory_order_item_id)
+                .eq("inventory_return_item_id", parsed.data.inventory_return_item_id)
                 .select()
                 .single();
 
             if (error) {
-                return NextResponse.json({ error: "Failed to update inventory order item" }, { status: 400 });
+                return NextResponse.json({ error: "Failed to update inventory return item" }, { status: 400 });
             }
 
             return NextResponse.json(data);
         } catch (error) {
             console.error(error);
             return NextResponse.json(
-                { error: error instanceof Error ? error.message: "Failed to update inventory order item" },
+                { error: error instanceof Error ? error.message: "Failed to update inventory return item" },
                 { status: 500 }
             );
         }

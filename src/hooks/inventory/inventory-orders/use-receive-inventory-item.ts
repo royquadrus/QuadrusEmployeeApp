@@ -58,9 +58,5 @@ export function useReceiveInventoryItem(){
             toast.success("Inventory item received");
             queryClient.invalidateQueries({ queryKey: ["inventory-order-items", data.inventory_order_id] });
         },
-        /*
-        onError: (error: unknown) => {
-            toast.error(error instanceof Error ? error.message: "Failed to receive inventory item");
-        },*/
     });
 }

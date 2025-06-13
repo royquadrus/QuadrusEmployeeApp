@@ -13,8 +13,6 @@ export default function InventoryOrdersPage() {
     const { data: inventoryOrders, isLoading, error } = useGetInventoryOrders();
     const router = useRouter();
 
-    console.log("Page:", inventoryOrders);
-
     if (isLoading) {
         return (
             <div className="p-2 space-y-3">

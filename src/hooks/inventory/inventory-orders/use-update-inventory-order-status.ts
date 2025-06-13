@@ -21,6 +21,7 @@ export function useUpdateInventoryOrderStatus() {
         onSuccess: (data) => {
             toast.success("Inventory order status updated");
             queryClient.invalidateQueries({ queryKey: ["inventory-order", data.inventory_order_id] });
+            queryClient.invalidateQueries({ queryKey: ["inventory-orders"] });
         },
         onError: (error: unknown) => {
             toast.error(error instanceof Error ? error.message : "Failed to update inventory order status");
