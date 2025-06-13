@@ -3,12 +3,13 @@
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Clock, House, Menu, X } from "lucide-react";
+import { Box, Clock, House, Menu, X } from "lucide-react";
 import Link from "next/link";
 
 const modules = [
     { name: "Dashboard", href: "/dashboard", icon: <House className="h-5 w-5" /> },
     { name: "Timeclock", href: "/timeclock", icon: <Clock className="h-5 w-5" /> },
+    { name: "Inventory", href: "/inventory/dashboard", icon: <Box className="h-5 w-5" /> },
 ];
 
 export function MainNav() {

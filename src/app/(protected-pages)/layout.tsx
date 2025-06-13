@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthBootstrapper } from "@/components/app/auth-bootstrapper";
 import { MainNav } from "@/components/navigation/main-nav";
 import { useProtectedRoute } from "@/hooks/use-protected-route";
 import { Loader } from "lucide-react";
@@ -9,20 +10,20 @@ export default function ProtectedLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { isLoading } = useProtectedRoute();
-
-    if (isLoading) {
-        return (
-            <div className="flex h-screen w-screen items-center justify-center">
-                <Loader className="animate-spin" />
-            </div>
-        );
-    }
+    const { shouldBlock, bootstrapped } = useProtectedRoute({ redirectTo: "/login" });
 
     return (
-        <div className="min-h-screen bg-background">
-            <MainNav />
-            <main>{children}</main>
-        </div>
+        <AuthBootstrapper>
+            {!bootstrapped || shouldBlock ? (
+                <div className="flex h-screen w-screen items-center justify-center">
+                    <Loader className="animate-spin" />
+                </div>
+            ): (
+                <div className="min-h-screen bg-background">
+                    <MainNav />
+                    <main>{children}</main>
+                </div>
+            )}
+        </AuthBootstrapper>        
     );
 }

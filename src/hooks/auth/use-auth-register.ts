@@ -1,3 +1,4 @@
+import { createClientSupabaseClient } from "@/lib/supabase/client";
 import { RegisterFormData } from "@/lib/validation/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,24 +12,22 @@ interface UseAuthRegister {
 export function UseAuthRegister(): UseAuthRegister {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const supabase = createClientSupabaseClient();
 
     async function register(data: RegisterFormData) {
+        setIsLoading(true);
+
         try {
-            setIsLoading(true);
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
+            const { error } = await supabase.auth.signUp({
+                email: data.email,
+                password: data.password,
             });
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error);
-            }
+            if (error) throw new Error(error.message);
 
-            toast.success('You have successfully registered');
+            toast.success('Check your email to confirm your registration');
 
-            router.push("/dashboard");
+            router.push("/login");
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "Failed to register");
         } finally {

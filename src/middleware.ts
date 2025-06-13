@@ -12,14 +12,17 @@ export async function middleware(request: NextRequest) {
 
     const {
         data: { session },
-    } = await supabase.auth.getSession()
+    } = await supabase.auth.getSession();
 
     // Protected routes pattern
-    const isProtectedRoute = request.nextUrl.pathname.startsWith('/profile')
-    const isAuthRoute = request.nextUrl.pathname.startsWith('/auth')
+    const protectedPaths = ['/dashboard', '/timeclock'];
+    const isProtectedRoute = protectedPaths.some(path =>
+        request.nextUrl.pathname.startsWith(path)
+    );
+    const isAuthRoute = request.nextUrl.pathname.startsWith('/login')
 
     if (isProtectedRoute && !session) {
-        return NextResponse.redirect(new URL('/auth/login', request.url));
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 
     if (isAuthRoute && session) {
