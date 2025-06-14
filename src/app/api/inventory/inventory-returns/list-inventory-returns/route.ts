@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .from("employee_inventory_return_summary")
+                .from("view_employee_inventory_return_summary")
                 .select();
 
             if (error) throw error;

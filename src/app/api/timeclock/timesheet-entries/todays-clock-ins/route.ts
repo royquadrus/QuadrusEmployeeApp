@@ -20,8 +20,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .select("timesheet_entry_id, time_in, project_id, timesheet_task_id, time_out")
                 .eq("timesheet_id", timesheetId)
                 .eq("entry_date", today)
@@ -34,8 +33,7 @@ export async function GET(request: NextRequest) {
                     let projectData = null;
                     if (entry.project_id) {
                         const { data: project, error: projectError } = await supabase
-                            .schema("pm")
-                            .from("projects")
+                            .from("pm_projects")
                             .select("project_id, project_number, project_name")
                             .eq("project_id", entry.project_id)
                             .single();
@@ -48,8 +46,7 @@ export async function GET(request: NextRequest) {
                     let taskData = null;
                     if (entry.timesheet_task_id) {
                         const { data: task, error: taskError } = await supabase
-                            .schema("hr")
-                            .from("timesheet_tasks")
+                            .from("hr_timesheet_tasks")
                             .select("timesheet_task_id, task_name")
                             .eq("timesheet_task_id", entry.timesheet_task_id)
                             .single();

@@ -16,8 +16,7 @@ export async function PUT(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data: currentEntry, error: currentEntryError } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .select("time_in")
                 .eq("timesheet_entry_id", entryId)
                 .single();
@@ -34,8 +33,7 @@ export async function PUT(request: NextRequest) {
             const durationMinutes = differenceInMinutes(now, timeIn);
 
             const { error: updateError } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .update({
                     time_out: timeOut,
                     duration: durationMinutes,

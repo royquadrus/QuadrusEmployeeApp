@@ -15,8 +15,7 @@ export async function GET(request: NextRequest) {
             console.log('Current date:', currentDate);
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("pay_periods")
+                .from("hr_pay_periods")
                 .select("*")
                 .lte("start_date", currentDate)
                 .gte("end_date", currentDate)

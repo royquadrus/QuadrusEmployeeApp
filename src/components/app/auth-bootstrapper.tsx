@@ -27,8 +27,7 @@ export function AuthBootstrapper({ children }: { children: React.ReactNode }) {
 
         if (user) {
           const { data: employee, error } = await supabase
-            .schema("hr")
-            .from("employees")
+            .from("hr_employees")
             .select("employee_id, first_name, last_name, email")
             .eq("user_id", user.id)
             .maybeSingle();
@@ -58,8 +57,7 @@ export function AuthBootstrapper({ children }: { children: React.ReactNode }) {
 
       if (user) {
         const { data: employee } = await supabase
-          .schema("hr")
-          .from("employees")
+          .from("hr_employees")
           .select("employee_id, first_name, last_name, email")
           .eq("user_id", user.id)
           .maybeSingle();

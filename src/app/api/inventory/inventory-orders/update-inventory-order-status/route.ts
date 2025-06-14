@@ -19,8 +19,7 @@ export async function PUT(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("inv")
-                .from("inventory_orders")
+                .from("inv_inventory_orders")
                 .update(parsed.data)
                 .eq("inventory_order_id", parsed.data.inventory_order_id)
                 .select()

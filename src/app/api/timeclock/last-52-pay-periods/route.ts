@@ -14,8 +14,7 @@ export async function GET(request: NextRequest) {
             const now = new Date();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("pay_periods")
+                .from("hr_pay_periods")
                 .select("pay_period_id, start_date, end_date")
                 .lte("start_date", now.toISOString())
                 .order("start_date", { ascending: false })

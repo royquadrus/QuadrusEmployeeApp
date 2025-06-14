@@ -16,8 +16,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .select("timesheet_entry_id, time_in, time_out, duration, timesheet_task_id, project_id, entry_date")
                 .eq("timesheet_entry_id", timesheetEntryId)
                 .single();
@@ -48,8 +47,7 @@ export async function PUT(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .update(validatedData)
                 .eq("timesheet_entry_id", body.timesheet_entry_id)
                 .select();
@@ -82,8 +80,7 @@ export async function POST(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .insert(validatedData)
                 .select();
 

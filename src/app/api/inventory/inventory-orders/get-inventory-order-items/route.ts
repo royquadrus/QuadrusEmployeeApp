@@ -19,8 +19,7 @@ export async function POST(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("inv")
-                .from("inventory_order_items")
+                .from("inv_inventory_order_items")
                 .select(`
                     inventory_order_item_id,
                     item_sku,

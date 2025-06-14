@@ -17,8 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const fetchEmployeeData = async (userId: string) => {
             const { data, error } = await supabase
-                .schema("hr")
-                .from("employees")
+                .from("hr_employees")
                 .select("employee_id, first_name, last_name, email")
                 .eq("user_id", userId)
                 .maybeSingle();

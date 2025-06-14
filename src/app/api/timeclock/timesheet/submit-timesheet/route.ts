@@ -14,8 +14,7 @@ export async function PUT(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheets")
+                .from("hr_timesheets")
                 .update({
                     status: 'Submitted',
                     updated_at: new Date().toISOString(),

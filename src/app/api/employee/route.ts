@@ -12,8 +12,7 @@ export async function GET(request: NextRequest) {
         try {
             const supabase = await createServerSupabaseClient();
             const { data, error } = await supabase
-                .schema("hr")
-                .from("employees")
+                .from("hr_employees")
                 .select("*");
 
             if (error) throw error;

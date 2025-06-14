@@ -15,8 +15,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .select("timesheet_entry_id, time_in, time_out, duration, timesheet_task_id, project_id, entry_date")
                 .eq("timesheet_entry_id", timesheetEntryId)
                 .single();

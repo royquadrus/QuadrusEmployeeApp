@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
             const supabase = await createServerSupabaseClient();
 
-            type TiemsheetEntry = Database['hr']['Tables']['timesheet_entries']['Insert'];
+            type TiemsheetEntry = Database['public']['Tables']['hr_timesheet_entries']['Insert'];
             // Create the timesheet entry with current timestamp
             const entryData: TiemsheetEntry = {
                 timesheet_id: validatedData.timesheet_id,
@@ -29,8 +29,7 @@ export async function POST(request: NextRequest) {
             };
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .insert(entryData)
                 .select()
                 .single();
@@ -42,8 +41,7 @@ export async function POST(request: NextRequest) {
                 let projectData = null;
                 if (data.project_id) {
                     const { data: project, error: projectError } = await supabase
-                        .schema("pm")
-                        .from("projects")
+                        .from("pm_projects")
                         .select("project_id, project_number, project_name")
                         .eq("project_id", data.project_id)
                         .single();
@@ -56,8 +54,7 @@ export async function POST(request: NextRequest) {
                 let taskData = null;
                 if (data.timesheet_task_id) {
                     const { data: task, error: taskError } = await supabase
-                        .schema("hr")
-                        .from("timesheet_tasks")
+                        .from("hr_timesheet_tasks")
                         .select("timesheet_task_id, task_name")
                         .eq("timesheet_task_id", data.timesheet_task_id)
                         .single();

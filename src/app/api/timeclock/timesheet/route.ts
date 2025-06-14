@@ -22,8 +22,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data: employee, error: employeeError } = await supabase
-                .schema("hr")
-                .from("employees")
+                .from("hr_employees")
                 .select("employee_id")
                 .eq("email", userEmail)
                 .single();
@@ -39,8 +38,7 @@ export async function GET(request: NextRequest) {
 
             let timesheetId;
             const { data: timesheet, error: timesheetError } = await supabase
-                .schema("hr")
-                .from("timesheets")
+                .from("hr_timesheets")
                 .select("timesheet_id")
                 .eq("employee_id", employeeId)
                 .eq("pay_period_id", payPeriodId)
@@ -57,8 +55,7 @@ export async function GET(request: NextRequest) {
                 timesheetId = timesheet.timesheet_id;
             } else {
                 const { data: newTimesheet, error: newTimesheetError } = await supabase
-                    .schema("hr")
-                    .from("timesheets")
+                    .from("hr_timesheets")
                     .insert({
                         employee_id: employeeId,
                         pay_period_id: payPeriodId,

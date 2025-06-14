@@ -26,8 +26,7 @@ export async function POST(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { error } = await supabase
-                .schema("hr")
-                .from("timesheet_entries")
+                .from("hr_timesheet_entries")
                 .insert(parsedData)
                 .select()
                 .single();

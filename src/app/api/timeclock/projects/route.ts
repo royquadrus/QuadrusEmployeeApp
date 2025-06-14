@@ -12,8 +12,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("pm")
-                .from("projects")
+                .from("pm_projects")
                 .select("project_id, project_number, project_name")
                 .in("project_status", ['Design', 'Queued', 'WIP', 'Built'])
                 .order("project_number", { ascending: false });

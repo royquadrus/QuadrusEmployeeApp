@@ -12,8 +12,7 @@ export async function GET(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .schema("hr")
-                .from("timesheet_tasks")
+                .from("hr_timesheet_tasks")
                 .select("timesheet_task_id, task_name")
                 .order("task_name");
 
