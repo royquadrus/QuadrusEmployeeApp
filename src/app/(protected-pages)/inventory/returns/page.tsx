@@ -23,7 +23,7 @@ export default function InventoryReturnsPage() {
         );
     }
 
-    if (error) <div className="p-2">Error loading inventory returns</div>;
+    if (error) return <div className="p-2">Error loading inventory returns</div>;
 
     const filteredReturns = showAll
         ? inventoryReturns

@@ -2,6 +2,7 @@
 
 import { AuthBootstrapper } from "@/components/app/auth-bootstrapper";
 import { MainNav } from "@/components/navigation/main-nav";
+import { useEnsureDropdownData } from "@/hooks/use-ensure.dropdown-data";
 import { useProtectedRoute } from "@/hooks/use-protected-route";
 import { Loader } from "lucide-react";
 
@@ -11,6 +12,7 @@ export default function ProtectedLayout({
     children: React.ReactNode;
 }) {
     const { shouldBlock, bootstrapped } = useProtectedRoute({ redirectTo: "/login" });
+    useEnsureDropdownData();
 
     return (
         <AuthBootstrapper>
