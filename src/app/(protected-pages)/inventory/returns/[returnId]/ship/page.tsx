@@ -13,6 +13,7 @@ import { CheckCircle, ChevronsUpDown } from "lucide-react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/lib/stores/use-auth-store";
 
 export default function ShipOrderPage() {
     const params = useParams();
@@ -22,6 +23,7 @@ export default function ShipOrderPage() {
     const [inputQty, setInputQty] = useState(0);
     const shipInventoryItem = useShipInventoryItem();
     const updateInventoryReturnStatus = useUpdateInventoryReturnStatus();
+    const { employee } = useAuthStore();
 
     const {
         data: invReturn,
@@ -60,8 +62,8 @@ export default function ShipOrderPage() {
     const handleReturnShip = () => {
         updateInventoryReturnStatus.mutate({
             inventory_return_id: invReturn.inventory_return_id,
-            status: "Shipped",
-            updated_at: new Date().toISOString(),
+            customer_id: invReturn.customer_id,
+            performed_by_id: employee.employee_id,
         });
     }
 

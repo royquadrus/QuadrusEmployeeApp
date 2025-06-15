@@ -38,12 +38,8 @@ export const ShipInventoryItemSchema = z.object({
 
 export const UpdateInventoryReturnSchema = z.object({
     inventory_return_id: z.coerce.number(),
-    status: z.enum(["Submitted", "Shipped"]),
-    updated_at: z.union([z.string(), z.date()])
-        .transform((val) => {
-            const date = typeof val === "string" ? new Date(val) : val;
-            return date.toISOString();
-        }),
+    performed_by_id: z.coerce.number(),
+    customer_id: z.coerce.number(),
 });
 
 export type InventoryReturn = z.infer<typeof InventoryReturnSchema>;

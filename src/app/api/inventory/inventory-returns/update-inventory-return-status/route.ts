@@ -18,18 +18,19 @@ export async function PUT(request: NextRequest) {
 
             const supabase = await createServerSupabaseClient();
 
-            const { data, error } = await supabase
-                .from("inv_inventory_returns")
-                .update(parsed.data)
-                .eq("inventory_return_id", parsed.data.inventory_return_id)
-                .select()
-                .single();
+            const { error } = await supabase
+                .rpc("mark_inventory_return_shipped", {
+                    target_inventory_return_id: parsed.data.inventory_return_id,
+                    target_customer_id: parsed.data.customer_id,
+                    performed_by_id: parsed.data.performed_by_id,
+                });
 
             if (error) {
+                console.log(error);
                 return NextResponse.json({ error: "Failed to update inventory return status" }, { status: 400 });
             }
 
-            return NextResponse.json(data);
+            return NextResponse.json({ inventory_return_id: parsed.data.inventory_return_id });
         } catch (error) {
             console.error(error);
             return NextResponse.json(
