@@ -5,7 +5,6 @@ import { InventoryUsedForm } from "./inventory-used-form";
 import { CreateInventoryUsedSchema } from "@/lib/validation/inventory-used";
 import { useGetInventoryUsed } from "@/hooks/inventory/inventory-used/use-get-inventory-used";
 import InventoryUsedSkeleton from "./inventory-used-skeleton";
-import { Card, CardContent } from "@/components/ui/card";
 
 export default function InventoryUsedPage() {
     const { data: inventoryUsed, isLoading, error } = useGetInventoryUsed();
@@ -23,8 +22,6 @@ export default function InventoryUsedPage() {
 
     if (error) return <div className="p-2">Error loading inventory used</div>;
 
-    console.log("From page:", inventoryUsed);
-
     return (
         <div className="p-4">
             <InventoryUsedForm
@@ -35,8 +32,8 @@ export default function InventoryUsedPage() {
             />
             <h2 className="text-lg font-bold p-2">Last 10 Items Loaded</h2>
             <div className="space-y-2">
-                {inventoryUsed.map((item) => (
-                    <div className="p-2 flex flex-col rounded-md border">
+                {inventoryUsed.map((item, index) => (
+                    <div key={index} className="p-2 flex flex-col rounded-md border">
                         <div className="font-semibold">{item.item_sku}</div>
                         <div className="text-muted-foreground">
                             <strong>WO #:</strong> {item.work_order_number}

@@ -5,7 +5,7 @@ export const useGetInventoryUsed = () => {
     return useQuery<InventoryUsed[]>({
         queryKey: ["inventory-used"],
         queryFn: async () => {
-            const response = await fetch ("/api/inventory/inventory-used/get-inventory-used");
+            const response = await fetch("/api/inventory/inventory-used/get-inventory-used");
 
             if (!response.ok) {
                 const errorData = await response.json();
