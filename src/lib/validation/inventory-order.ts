@@ -30,8 +30,7 @@ export const ReceiveInventoryItemSchema = z.object({
 
 export const UpdateInventoryOrderSchema = z.object({
     inventory_order_id: z.coerce.number(),
-    order_status: z.enum(["Ordered", "Received"]),
-    updated_at: z.coerce.date().transform((date) => date instanceof Date ? date.toISOString() : date),
+    performed_by_id: z.number(),
 });
 
 export const GetInventoryOrdersSchema = z.array(InventoryOrderSchema);

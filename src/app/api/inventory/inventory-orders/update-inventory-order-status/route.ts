@@ -19,17 +19,17 @@ export async function PUT(request: NextRequest) {
             const supabase = await createServerSupabaseClient();
 
             const { data, error } = await supabase
-                .from("inv_inventory_orders")
-                .update(parsed.data)
-                .eq("inventory_order_id", parsed.data.inventory_order_id)
-                .select()
-                .single();
+                .rpc("mark_inventory_order_received", {
+                    target_inventory_order_id: parsed.data.inventory_order_id,
+                    performed_by_id: parsed.data.performed_by_id,
+                });
 
+            console.log(error);
             if (error) {
                 return NextResponse.json({ error: "Failed to update inventory order status" }, { status: 400 });
             }
 
-            return NextResponse.json(data);
+            return NextResponse.json({ inventory_order_id: parsed.data.inventory_order_id });
         } catch (error) {
             console.error(error);
             return NextResponse.json(

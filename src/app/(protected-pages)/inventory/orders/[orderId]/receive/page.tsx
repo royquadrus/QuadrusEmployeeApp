@@ -13,6 +13,7 @@ import InventoryOrderSkeleton from "../../inventory-order-skeleton";
 import { useGetInventoryOrderItems } from "@/hooks/inventory/inventory-orders/use-get-inventory-order-items";
 import { useReceiveInventoryItem } from "@/hooks/inventory/inventory-orders/use-receive-inventory-item";
 import { useUpdateInventoryOrderStatus } from "@/hooks/inventory/inventory-orders/use-update-inventory-order-status";
+import { useAuthStore } from "@/lib/stores/use-auth-store";
 
 export default function ReceiveOrderPage() {
     const params = useParams();
@@ -22,6 +23,7 @@ export default function ReceiveOrderPage() {
     const [inputQty, setInputQty] = useState(0);
     const receiveInventoryItem = useReceiveInventoryItem();
     const updateInventoryOrderStatus = useUpdateInventoryOrderStatus();
+    const { employee } = useAuthStore();
 
     const {
         data: order,
@@ -60,8 +62,7 @@ export default function ReceiveOrderPage() {
     const handleOrderReceive = () => {
         updateInventoryOrderStatus.mutate({
             inventory_order_id: order.inventory_order_id,
-            order_status: "Received",
-            updated_at: new Date().toISOString(),
+            performed_by_id: employee?.employee_id,
         });
     }
 
