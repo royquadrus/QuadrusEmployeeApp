@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { create } from "zustand";
+import { DropdownProjectSchema, DropdownTimesheetTaskSchema } from "../validation/dropdowns";
 
 export const DropdownWOrkOrderSchema = z.object({
     work_order_id: z.coerce.string(),
@@ -19,6 +20,8 @@ type DropdownOption = { id: string, label: string };
 interface DropdownStore {
     workOrders: DropdownOption[];
     inventoryItems: DropdownOption[];
+    projects: DropdownOption[];
+    timesheetTasks: DropdownOption[];
     isLoaded: boolean;
     fetchDropdownData: () => Promise<void>;
     forceReloadDropdownData: () => Promise<void>;
@@ -30,23 +33,33 @@ interface DropdownStore {
 export const useDropdownStore = create<DropdownStore>((set, get) => ({
     workOrders: [],
     inventoryItems: [],
+    projects: [],
+    timesheetTasks: [],
     isLoaded: false,
     fetchDropdownData: async () => {
         try {
             const [
                 workOrderRes,
                 inventoryItemRes,
+                projectRes,
+                timesheetTaskRes,
             ] = await Promise.all([
                 fetch("/api/dropdown/work-orders"),
                 fetch("/api/dropdown/inventory-items"),
+                fetch("/api/dropdown/projects"),
+                fetch("/api/dropdown/timesheet-tasks"),
             ]);
 
             const workOrderData = DropdownWOrkOrderSchema.array().parse(await workOrderRes.json());
             const inventoryItemData = DropdownInventoryItemSchema.array().parse(await inventoryItemRes.json());
+            const projectData = DropdownProjectSchema.array().parse(await projectRes.json());
+            const timesheetTaskData = DropdownTimesheetTaskSchema.array().parse(await timesheetTaskRes.json());
 
             set ({
                 workOrders: workOrderData.map((c) => ({ id: c.work_order_id, label: c.work_order_number })),
                 inventoryItems: inventoryItemData.map((i) => ({ id: i.item_sku, label: i.item_name })),
+                projects: projectData.map((p) => ({ id: p.project_id, label: p.project_name })),
+                timesheetTasks: timesheetTaskData.map((t) => ({ id: t.timesheet_task_id, label: t.task_name })),
             });
         } catch (error) {
             console.error("Failed to load dropdown data", error);

@@ -6,7 +6,7 @@ export function useClockActions() {
     const [isLoading, setIsLoading] = useState(false);
     const { currentTimesheet, setActiveEntry } = useTimeclockStore();
 
-    async function clockIn(data: any) {
+    /*async function clockIn(data: any) {
         try {
             setIsLoading(true);
             if (!currentTimesheet) {
@@ -39,7 +39,7 @@ export function useClockActions() {
         } finally {
             setIsLoading(false);
         }
-    }
+    }*/
 
     async function clockOut(entryId: string) {
         try {
@@ -66,5 +66,5 @@ export function useClockActions() {
         }
     }
 
-    return { isLoading, clockIn, clockOut };
+    return { isLoading, clockOut };
 }

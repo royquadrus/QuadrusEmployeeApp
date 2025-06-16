@@ -1,7 +1,7 @@
 import { withAuth } from "@/lib/api/with-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { Database } from "@/lib/supabase/types";
-import { clockInSchema } from "@/lib/validation/timeclock";
+import { FullClockInSchema } from "@/lib/validation/timeclock";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -14,18 +14,15 @@ export async function POST(request: NextRequest) {
             const body = await request.json();
             
             // validate the basic clock-in data
-            const validatedData = clockInSchema.parse(body);
+            const validatedData = FullClockInSchema.parse(body);
 
             const supabase = await createServerSupabaseClient();
 
-            type TiemsheetEntry = Database['public']['Tables']['hr_timesheet_entries']['Insert'];
-            // Create the timesheet entry with current timestamp
-            const entryData: TiemsheetEntry = {
-                timesheet_id: validatedData.timesheet_id,
-                project_id: validatedData.project_id ? Number(validatedData.project_id) || null : null,
-                timesheet_task_id: validatedData.timesheet_task_id ? Number(validatedData.timesheet_task_id) || null : null,
-                entry_date: new Date().toISOString().split('T')[0],
-                time_in: new Date().toISOString(),
+            const entryDate = new Date(validatedData.time_in).toISOString().split("T")[0];
+
+            const entryData = {
+                ...validatedData,
+                entry_date: entryDate,
             };
 
             const { data, error } = await supabase
@@ -36,47 +33,7 @@ export async function POST(request: NextRequest) {
 
             if (error) throw error;
 
-            let formattedData = null;
-            if (data) {
-                let projectData = null;
-                if (data.project_id) {
-                    const { data: project, error: projectError } = await supabase
-                        .from("pm_projects")
-                        .select("project_id, project_number, project_name")
-                        .eq("project_id", data.project_id)
-                        .single();
-
-                    if (!projectError) {
-                        projectData = project;
-                    }
-                }
-
-                let taskData = null;
-                if (data.timesheet_task_id) {
-                    const { data: task, error: taskError } = await supabase
-                        .from("hr_timesheet_tasks")
-                        .select("timesheet_task_id, task_name")
-                        .eq("timesheet_task_id", data.timesheet_task_id)
-                        .single();
-
-                    if (!taskError) {
-                        taskData = task;
-                    }
-                }
-
-                formattedData = {
-                    timesheet_entry_id: data.timesheet_entry_id,
-                    time_in: data.time_in,
-                    project_name: projectData ? projectData.project_number + ' - ' + projectData.project_name : null,
-                    task_name: taskData ? taskData.task_name : null,
-                };
-            }
-
-            return NextResponse.json({
-                success: true,
-                formattedData,
-                message: 'Successfully clocked in'
-            });
+            return NextResponse.json(data);
         } catch (error) {
             console.error(error);
             return NextResponse.json(

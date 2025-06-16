@@ -1,28 +1,13 @@
 "use client";
 
-import { ClockInForm } from "@/components/timeclock/clock-in-form";
-import { ClockedInCard } from "@/components/timeclock/clocked-in-card";
-import { TodaysClockIns } from "@/components/timeclock/todays-clock-ins";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTimeclockData } from "@/hooks/use-timeclock-data";
-import { useTimeclockStore } from "@/lib/stores/use-timeclock-store";
-import { useAuthSession } from "@/lib/utils/auth-utils";
-import { useEffect } from "react";
+import { useTimeclockSessionStore } from "@/lib/stores/use-timeclock-session-store";
+import { ClockInForm } from "./clock-in-form";
+import { ClockedInCard } from "./clocked-in-card";
+import { TodaysClockIns } from "./todays-clock-ins";
 
 export default function TimeClockPage() {
-    const { session } = useAuthSession();
-    const { activeEntry } = useTimeclockStore();
-    const { initializeTimeclockData, isDataLoading } = useTimeclockData();
-
-    useEffect(() => {
-        if (session?.user?.email) {
-            initializeTimeclockData(session.user.email);
-        }
-    }, [session?.user, initializeTimeclockData]);
-
-    if (isDataLoading) {
-        return <div>Loading...</div>;
-    }
+    const { activeEntry } = useTimeclockSessionStore();
 
     return (
         <div className="container mx-auto py-8 space-y-8">

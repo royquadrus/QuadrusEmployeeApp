@@ -11,47 +11,33 @@ export async function PUT(request: NextRequest) {
 
         try {
             const body = await request.json();
-            const entryId = body.entryId;
+            
+            const now = new Date();
+            const timeOut = now.toISOString();
+            const timeIn = new Date(body.time_in);
+
+            const durationMinutes = differenceInMinutes(now, timeIn);
+
+            const entryData = {
+                time_out: timeOut,
+                duration: durationMinutes,
+                updated_at: timeOut,
+            };
 
             const supabase = await createServerSupabaseClient();
 
-            const { data: currentEntry, error: currentEntryError } = await supabase
+            const { error } = await supabase
                 .from("hr_timesheet_entries")
-                .select("time_in")
-                .eq("timesheet_entry_id", entryId)
-                .single();
+                .update(entryData)
+                .eq("timesheet_entry_id", body.timesheet_entry_id);
+            
+            if (error) return NextResponse.json({ error: "Failed to clock out" }, { status: 500 });
 
-            if (currentEntryError || !currentEntry) {
-                return NextResponse.json({ error: 'Timesheet entry not found' }, { status: 400 });
-            }
-
-            const now = new Date();
-            const timeOut = now.toISOString();
-            const timeIn = new Date(currentEntry.time_in);
-
-            // Calculate duration
-            const durationMinutes = differenceInMinutes(now, timeIn);
-
-            const { error: updateError } = await supabase
-                .from("hr_timesheet_entries")
-                .update({
-                    time_out: timeOut,
-                    duration: durationMinutes,
-                    updated_at: timeOut,
-                })
-                .eq("timesheet_entry_id", entryId);
-
-            if (updateError) {
-                return NextResponse.json({ error: 'Failed to clock out' }, { status: 500 });
-            }
-
-            return NextResponse.json({
-                success: true,
-            });
+            return NextResponse.json({ success: true });
         } catch (error) {
             console.error(error);
             return NextResponse.json(
-                { error: 'Failed to clock out' },
+                { error: error instanceof Error ? error.message : 'Failed to clock out' },
                 { status: 500 }
             )
         }

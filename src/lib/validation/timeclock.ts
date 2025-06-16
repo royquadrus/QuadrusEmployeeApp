@@ -1,15 +1,4 @@
-import { z } from "zod";
-
-/*export const timesheetEntrySchema = z.object({
-    /*
-    projectId: z.string().min(1, "Project is required"),
-    taskId: z.string().min(1, "Task is required"),
-    timesheet_id: z.number(),
-    project_id: z.number().optional(),
-    timesheet_task_id: z.number().optional(),
-    entry_date: z.date().optional(),
-    time_in: z.string().optional(),
-});*/
+import { number, string, z } from "zod";
 
 export const timesheetEntrySchema = z.object({
     timesheet_id: z.number().positive(),
@@ -23,10 +12,23 @@ export const timesheetEntrySchema = z.object({
     minutes_banked: z.number().optional(),
 });
 
-export const clockInSchema = z.object({
-    timesheet_id: z.number().positive(),
-    project_id: z.string().nullable().optional().transform(val => val || null),
-    timesheet_task_id: z.string().nullable().optional().transform(val => val || null),
+export const BasicTimesheetEntrySchema = z.object({
+    timesheet_entry_id: z.number(),
+    time_in: z.string(),
+    time_out: z.string(),
+    project_name: z.string(),
+    task_name: z.string(),
+    duration: z.number(),
+});
+
+export const ClockInFormSchema = z.object({
+    timesheet_id: z.number(),
+    project_id: z.coerce.number(),
+    timesheet_task_id: z.coerce.number(),
+});
+
+export const FullClockInSchema = ClockInFormSchema.extend({
+    time_in: z.string(),
 });
 
 export const clockOutSchema = z.object({
@@ -47,6 +49,8 @@ export const fullTimesheetEntrySchema = z.object({
 })
 
 export type TimesheetEntryFormData = z.infer<typeof timesheetEntrySchema>;
-export type ClockInFormData = z.infer<typeof clockInSchema>;
 export type ClockOutFormData = z.infer<typeof clockOutSchema>;
 export type FullTimesheetEntryFormData = z.infer<typeof fullTimesheetEntrySchema>;
+export type ClockInFormInput = z.infer<typeof ClockInFormSchema>;
+export type FullClockInInput = z.infer<typeof FullClockInSchema>;
+export type BasicTimesheetEntry = z.infer<typeof BasicTimesheetEntrySchema>;
