@@ -21,6 +21,8 @@ export function useCreateInventoryRemaining() {
         onSuccess: () => {
             toast.success("Inventory remaining created");
             queryClient.invalidateQueries({ queryKey: ["inventory-remaining"] });
+            queryClient.invalidateQueries({ queryKey: ["monthly-inventory-usage"] });
+            queryClient.invalidateQueries({ queryKey: ["dashboard-inventory-stats"] });
         },
         onError: (error: unknown) => {
             toast.error(error instanceof Error ? error.message : "Failed to create inventory remaining");
