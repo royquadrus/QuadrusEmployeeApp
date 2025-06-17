@@ -1,31 +1,31 @@
 "use client";
 
-import { ClockInForm } from "@/components/timeclock/clock-in-form";
-import { ClockedInCard } from "@/components/timeclock/clocked-in-card";
-import { TodaysClockIns } from "@/components/timeclock/todays-clock-ins";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTimeclockData } from "@/hooks/use-timeclock-data";
-import { useTimeclockStore } from "@/lib/stores/use-timeclock-store";
-import { useAuthSession } from "@/lib/utils/auth-utils";
-import { useEffect } from "react";
+import { useTimeclockSessionStore } from "@/lib/stores/use-timeclock-session-store";
+import { ClockInForm } from "./clock-in-form";
+import { ClockedInCard } from "./clocked-in-card";
+import { TodaysClockIns } from "./todays-clock-ins";
+import { useTodaysHours } from "@/hooks/timeclock/timesheet-entries/use-todays-hours";
+import { useAuthStore } from "@/lib/stores/use-auth-store";
+import { formatDuration } from "@/lib/utils/time-utils";
 
 export default function TimeClockPage() {
-    const { session } = useAuthSession();
-    const { activeEntry } = useTimeclockStore();
-    const { initializeTimeclockData, isDataLoading } = useTimeclockData();
+    const { activeEntry } = useTimeclockSessionStore();
+    const { employee } = useAuthStore();
+    const { data: todaysHours } = useTodaysHours(employee.employee_id);
 
-    useEffect(() => {
-        if (session?.user?.email) {
-            initializeTimeclockData(session.user.email);
-        }
-    }, [session?.user, initializeTimeclockData]);
-
-    if (isDataLoading) {
-        return <div>Loading...</div>;
-    }
+    console.log("PAGE:", todaysHours);
 
     return (
-        <div className="container mx-auto py-8 space-y-8">
+        <div className="container py-5 space-y-2">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-center font-bold">Total Hours Worked Today</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center text-xl font-bold text-muted-foreground">
+                    {formatDuration(todaysHours)}
+                </CardContent>
+            </Card>
             {activeEntry ? (
                 <>
                     <ClockedInCard />

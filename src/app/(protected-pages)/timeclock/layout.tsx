@@ -1,4 +1,7 @@
+"use client";
+
 import { ModuleNav } from "@/components/navigation/module-nav";
+import { useActiveEntry } from "@/hooks/timeclock/timesheet-entries/use-active-entry";
 import { CalendarDays, Clock } from "lucide-react";
 
 const timeClockNavItems = [
@@ -19,6 +22,7 @@ export default function TimeclockLayout({
 }: {
     children: React.ReactNode;
 }) {
+    useActiveEntry();
     return (
         <div>
             <ModuleNav items={timeClockNavItems} basePath="/timeclock" />

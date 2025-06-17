@@ -1,52 +1,96 @@
 import { z } from "zod";
 
-/*export const timesheetEntrySchema = z.object({
-    /*
-    projectId: z.string().min(1, "Project is required"),
-    taskId: z.string().min(1, "Task is required"),
+export const BaseTimesheetSchema = z.object({
     timesheet_id: z.number(),
-    project_id: z.number().optional(),
-    timesheet_task_id: z.number().optional(),
-    entry_date: z.date().optional(),
-    time_in: z.string().optional(),
-});*/
-
-export const timesheetEntrySchema = z.object({
-    timesheet_id: z.number().positive(),
-    project_id: z.number().positive().optional(),
-    timesheet_task_id: z.number().positive().optional(),
-    entry_date: z.string().date(), // ISO date string (YYYY-MM-DD)
-    time_in: z.string().datetime(), // ISO datetime string
-    time_out: z.string().datetime().optional(),
-    duration: z.number().optional(),
-    mintues_paid: z.number().optional(),
-    minutes_banked: z.number().optional(),
+    pay_period_id: z.string(),
+    status: z.string(),
 });
 
-export const clockInSchema = z.object({
-    timesheet_id: z.number().positive(),
-    project_id: z.string().nullable().optional().transform(val => val || null),
-    timesheet_task_id: z.string().nullable().optional().transform(val => val || null),
+export const PayPeriodSchema = z.object({
+    pay_period_id: z.string(),
+    start_date: z.string(),
+    end_date: z.string(),
 });
 
-export const clockOutSchema = z.object({
-    timesheet_entry_id: z.number().positive(),
-    time_out: z.string().datetime(),
-});
+export const BaseTimesheetEntrySchema = z.object({
+    timesheet_entry_id: z.coerce.string(),
+    time_in: z.string(),
+    pm_projects: z.object({
+        project_number: z.string().nullable().optional(),
+        project_name: z.string(),
+    }),
+    hr_timesheet_tasks: z.object({
+        task_name: z.string(),
+    }),
+}).transform((data) => ({
+    timesheet_entry_id: data.timesheet_entry_id,
+    time_in: data.time_in,
+    project_name: data.pm_projects.project_number
+        ? `${data.pm_projects.project_number} - ${data.pm_projects.project_name}`
+        : data.pm_projects.project_name,
+    task_name: data.hr_timesheet_tasks.task_name,
+}));
 
-export const fullTimesheetEntrySchema = z.object({
-    timesheet_entry_id: z.number().optional(),
+export const FullTimesheetEntrySchema = z.object({
+    timesheet_entry_id: z.coerce.string(),
+    time_in: z.string(),
+    time_out: z.string().nullable().optional(),
+    duration: z.number().nullable().optional(),
+    entry_date: z.string(),
+    pm_projects: z.object({
+        project_number: z.string().nullable().optional(),
+        project_name: z.string(),
+    }),
+    hr_timesheet_tasks: z.object({
+        task_name: z.string(),
+    }),
+}).transform((data) => ({
+    timesheet_entry_id: data.timesheet_entry_id,
+    time_in: data.time_in,
+    time_out: data.time_out
+        ? data.time_out
+        : "Active",
+    duration: data.duration
+        ? data.duration
+        : 0,
+    entry_date: data.entry_date,
+    project_name: data.pm_projects.project_number
+        ? `${data.pm_projects.project_number} - ${data.pm_projects.project_name}`
+        : data.pm_projects.project_name,
+    task_name: data.hr_timesheet_tasks.task_name,
+}));
+
+export const ClockInFormSchema = z.object({
     timesheet_id: z.number(),
-    project_id: z.number().optional(),
-    timesheet_task_id: z.number().optional(),
-    entry_date: z.string().optional(),
-    time_in: z.string().optional(),
-    time_out: z.string().optional(),
-    duration: z.number().optional(),
-    updated_at: z.string().optional(),
-})
+    project_id: z.coerce.number(),
+    timesheet_task_id: z.coerce.number(),
+});
 
-export type TimesheetEntryFormData = z.infer<typeof timesheetEntrySchema>;
-export type ClockInFormData = z.infer<typeof clockInSchema>;
-export type ClockOutFormData = z.infer<typeof clockOutSchema>;
-export type FullTimesheetEntryFormData = z.infer<typeof fullTimesheetEntrySchema>;
+export const FullClockInSchema = ClockInFormSchema.extend({
+    time_in: z.string(),
+});
+
+export const CreateTimesheetEntrySchema = z.object({
+    timesheet_id: z.coerce.number(),
+    project_id: z.coerce.number(),
+    timesheet_task_id: z.coerce.number(),
+    time_in: z.date(),
+    time_out: z.date(),
+});
+
+export const UpdateTimesheetEntrySchema = z.object({
+    timesheet_entry_id: z.number(),
+    project_id: z.coerce.number(),
+    timesheet_task_id: z.coerce.number(),
+    time_in: z.date(),
+    time_out: z.date(),
+});
+
+export type BaseTimesheet = z.infer<typeof BaseTimesheetSchema>;
+export type PayPeriod = z.infer<typeof PayPeriodSchema>;
+export type BaseTimesheetEntry = z.infer<typeof BaseTimesheetEntrySchema>;
+export type FullTimesheetEntry = z.infer<typeof FullTimesheetEntrySchema>;
+export type ClockInFormInput = z.infer<typeof ClockInFormSchema>;
+export type FullClockInInput = z.infer<typeof FullClockInSchema>;
+export type CreateTimesheetEntryInput = z.infer<typeof CreateTimesheetEntrySchema>;
+export type UpdateTimesheetEntryInput = z.infer<typeof UpdateTimesheetEntrySchema>;

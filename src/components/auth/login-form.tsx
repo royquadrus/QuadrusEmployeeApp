@@ -1,6 +1,6 @@
 "use client";
 
-import { UseAuthLogin } from "@/hooks/use-auth-login";
+import { UseAuthLogin } from "@/hooks/auth/use-auth-login";
 import { LoginFormData, loginSchema } from "@/lib/validation/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

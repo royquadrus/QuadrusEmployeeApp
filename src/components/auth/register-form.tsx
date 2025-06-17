@@ -1,6 +1,6 @@
 "use client";
 
-import { UseAuthRegister } from "@/hooks/use-auth-register";
+import { UseAuthRegister } from "@/hooks/auth/use-auth-register";
 import { RegisterFormData, registerSchema } from "@/lib/validation/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
