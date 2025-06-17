@@ -7,9 +7,9 @@ import DailyDetailSkeleton from "./daily-detail-skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDuration } from "@/lib/utils/time-utils";
 import { useCallback, useState } from "react";
-import { EditEntryDrawer } from "./edit-entry-drawer";
 import { Button } from "@/components/ui/button";
-import { NewEntryDrawer } from "./new-entry-drawer";
+import { EditEntryPanel } from "./edit-entry-panel";
+import { NewEntryPanel } from "./new-entry-panel";
 
 export function DailyPunchesList() {
     const { selectedDate, setSelectedEntryId, selectedTimesheet } = useTimeclockSessionStore();
@@ -106,12 +106,12 @@ export function DailyPunchesList() {
                 Add New Clock In
             </Button>
 
-            <EditEntryDrawer
+            <EditEntryPanel
                 isOpen={isEditDrawerOpen}
                 onOpenChange={handleEditDrawerClose}
-            />
+             />
 
-            <NewEntryDrawer
+            <NewEntryPanel
                 isOpen={isNewDrawerOpen}
                 onOpenChange={handleNewDrawerClose}
             />
