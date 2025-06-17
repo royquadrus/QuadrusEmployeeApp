@@ -1,12 +1,13 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTodaysClockIns } from "@/hooks/timeclock/use-todays-clock-ins";
+import { useTodaysTimesheetEntries } from "@/hooks/timeclock/timesheet-entries/use-todays-timesheet-entries";
 import { useTimeclockSessionStore } from "@/lib/stores/use-timeclock-session-store";
+import { format } from "date-fns";
 
 export function TodaysClockIns() {
     const { currentTimesheet } = useTimeclockSessionStore();
-    const { data: todaysClockIns, isLoading } = useTodaysClockIns(currentTimesheet.timesheet_id);
+    const { data: todaysClockIns, isLoading } = useTodaysTimesheetEntries(currentTimesheet.timesheet_id);
 
     return (
         <Card>
@@ -31,8 +32,8 @@ export function TodaysClockIns() {
                                 key={clockIn.timesheet_entry_id}
                                 className="items-center justify-between p-3 rounded-md border bg-card hover:bg-accent/50 transition-color"
                             >
-                                <p className="font-bold text-xl">{clockIn.project_name}</p>
-                                <p className="text-sm">{clockIn.time_in} - {clockIn.time_out}</p>
+                                <p className="text-sm font-bold">{clockIn.project_name}</p>
+                                <p className="text-sm text-muted-foreground">{`${format(clockIn.time_in, 'h:mm a')} - ${clockIn.time_out === 'Active' ? clockIn.time_out : format(clockIn.time_out, 'h:mm a')}`}</p>
                             </div>
                         ))}
                     </div>

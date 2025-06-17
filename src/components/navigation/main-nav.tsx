@@ -3,8 +3,9 @@
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Box, Clock, House, Menu, X } from "lucide-react";
+import { Box, Clock, House, LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useSignOut } from "@/lib/utils/auth-utils";
 
 const modules = [
     { name: "Dashboard", href: "/dashboard", icon: <House className="h-5 w-5" /> },
@@ -15,6 +16,7 @@ const modules = [
 export function MainNav() {
     const [isOpen, setIsOpen] = useState(false);
     const pathName = usePathname();
+    const signOut = useSignOut();
 
     return (
         <div className="bg-background border-b">
@@ -47,6 +49,10 @@ export function MainNav() {
                             <span>{module.name}</span>
                         </Link>
                     ))}
+                    <Button variant="ghost" onClick={signOut} className="flex space-x-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover-text-foreground">
+                        <span><LogOut className="h-5 w-5" /></span>
+                        <span>Sign Out</span>
+                    </Button>
                 </nav>
             </div>
 
@@ -69,6 +75,10 @@ export function MainNav() {
                                 <span>{module.name}</span>
                             </Link>
                         ))}
+                        <Button variant="ghost" onClick={signOut} className="text-muted-foreground hover:text-foreground">
+                            <span><LogOut className="h-5 w-5" /></span>
+                            <span>Sign Out</span>
+                        </Button>
                     </nav>
                 </div>
             )}

@@ -18,7 +18,7 @@ export function useCreateInventoryUsed() {
 
             return data;
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Inventory used created");
             queryClient.invalidateQueries({ queryKey: ["inventory-used"] });
         },

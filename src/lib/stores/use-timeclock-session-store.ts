@@ -1,17 +1,16 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { ActiveEntry, PayPeriod, Timesheet } from "../validation/btimeclock";
+import { BaseTimesheet, BaseTimesheetEntry, PayPeriod } from "../validation/timeclock";
 
 interface TimeclockSessionState {
    // Core session context
    currentPayPeriod: PayPeriod | null;
    selectedPayPeriod: PayPeriod | null;
 
-   currentTimesheet: Timesheet | null;
-   selectedTimesheet: number | null;
-   selectedTimesheetStatus: string | null;
+   currentTimesheet: BaseTimesheet | null;
+   selectedTimesheet: BaseTimesheet | null;
 
-   activeEntry: ActiveEntry | null;
+   activeEntry: BaseTimesheetEntry | null;
 
    // UI state
    selectedDate: string;
@@ -21,11 +20,10 @@ interface TimeclockSessionState {
    setCurrentPayPeriod: (p: PayPeriod | null) => void;
    setSelectedPayPeriod: (p: PayPeriod | null) => void;
 
-   setCurrentTimesheet: (t: Timesheet | null) => void;
-   setSelectedTimesheet: (id: number | null) => void;
-   setSelectedTimesheetStatus: (status: string | null) => void;
+   setCurrentTimesheet: (t: BaseTimesheet | null) => void;
+   setSelectedTimesheet: (t: BaseTimesheet | null) => void;
 
-   setActiveEntry: (entry: ActiveEntry | null) => void;
+   setActiveEntry: (entry: BaseTimesheetEntry | null) => void;
 
    setSelectedDate: (date: string) => void;
    setSelectedEntryId: (id: string | null) => void;
@@ -41,7 +39,6 @@ export const useTimeclockSessionStore = create<TimeclockSessionState>()(
 
             currentTimesheet: null,
             selectedTimesheet: null,
-            selectedTimesheetStatus: null,
 
             activeEntry: null,
 
@@ -52,8 +49,7 @@ export const useTimeclockSessionStore = create<TimeclockSessionState>()(
             setSelectedPayPeriod: (p) => set({ selectedPayPeriod: p }),
 
             setCurrentTimesheet: (t) => set({ currentTimesheet: t }),
-            setSelectedTimesheet: (id) => set({ selectedTimesheet: id }),
-            setSelectedTimesheetStatus: (status) => set({ selectedTimesheetStatus: status }),
+            setSelectedTimesheet: (t) => set({ selectedTimesheet: t }),
 
             setActiveEntry: (entry) => set({ activeEntry: entry }),
 
@@ -66,7 +62,6 @@ export const useTimeclockSessionStore = create<TimeclockSessionState>()(
                     selectedPayPeriod: null,
                     currentTimesheet: null,
                     selectedTimesheet: null,
-                    selectedTimesheetStatus: null,
                     activeEntry: null,
                     selectedDate: new Date().toISOString().split("T")[0],
                     selectedEntryId: null,
@@ -80,7 +75,6 @@ export const useTimeclockSessionStore = create<TimeclockSessionState>()(
                 selectedPayPeriod: state.selectedPayPeriod,
                 currentTimesheet: state.currentTimesheet,
                 selectedTimesheet: state.selectedTimesheet,
-                selectedTimesheetStatus: state.selectedTimesheetStatus,
                 activeEntry: state.activeEntry,
                 selectedEntryId: state.selectedEntryId,
                 selectedDate: state.selectedDate,   

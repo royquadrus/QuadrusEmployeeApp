@@ -1,6 +1,5 @@
 import { withAuth } from "@/lib/api/with-auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { Database } from "@/lib/supabase/types";
 import { FullClockInSchema } from "@/lib/validation/timeclock";
 import { NextResponse, type NextRequest } from "next/server";
 

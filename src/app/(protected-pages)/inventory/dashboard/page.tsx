@@ -25,11 +25,11 @@ export default function InventoryDashboardPage() {
     return (
         <div>
             <div className="mb-2">
-                <h1 className="text-lg font-semibold">Today's Deliveries</h1>
+                <h1 className="text-lg font-semibold">Today&apos;s Deliveries</h1>
                 <DashboardInventoryOrderTable data={inventoryData ?? []} />
             </div>
             <div className="mb-2">
-                <h1 className="text-lg font-semibold">Today's Returns</h1>
+                <h1 className="text-lg font-semibold">Today&apos;s Returns</h1>
                 <DashboardInventoryReturnTable data={returnData ?? []} />
             </div>
             <Card className="@container/card">

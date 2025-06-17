@@ -18,7 +18,7 @@ export async function PUT(request: NextRequest) {
 
             const supabase = await createServerSupabaseClient();
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .rpc("mark_inventory_order_received", {
                     target_inventory_order_id: parsed.data.inventory_order_id,
                     performed_by_id: parsed.data.performed_by_id,

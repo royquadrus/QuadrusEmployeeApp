@@ -1,9 +1,11 @@
 "use client";
 
+import { useProtectedRoute } from "@/hooks/use-protected-route";
 import { useAuthStore } from "@/lib/stores/use-auth-store";
 import { useTimeclockSessionStore } from "@/lib/stores/use-timeclock-session-store";
 import { createClientSupabaseClient } from "@/lib/supabase/client";
-import { PayPeriodSchema } from "@/lib/validation/btimeclock";
+import { PayPeriodSchema } from "@/lib/validation/timeclock";
+import { Loader } from "lucide-react";
 import { useEffect } from "react";
 
 export function AuthBootstrapper({ children }: {children: React.ReactNode }) {
@@ -22,6 +24,8 @@ export function AuthBootstrapper({ children }: {children: React.ReactNode }) {
         setSelectedPayPeriod,
         setCurrentTimesheet,
     } = useTimeclockSessionStore();
+
+    const { shouldBlock } = useProtectedRoute({ redirectTo: "/login" });
 
     useEffect(() => {
         if (bootstrapped) return;
@@ -53,6 +57,8 @@ export function AuthBootstrapper({ children }: {children: React.ReactNode }) {
                             .gte("end_date", today)
                             .maybeSingle();
 
+                        if (ppError) throw error;
+
                         const parsedPayPeriod = PayPeriodSchema.parse(payPeriod);
 
                         setCurrentPayPeriod(parsedPayPeriod ?? null);
@@ -65,7 +71,7 @@ export function AuthBootstrapper({ children }: {children: React.ReactNode }) {
                             .eq("pay_period_id", parsedPayPeriod?.pay_period_id ?? "")
                             .maybeSingle();
 
-                        if (error) throw error;
+                        if (tsError) throw error;
 
                         let timesheet = existingTimesheet;
 
@@ -116,8 +122,12 @@ export function AuthBootstrapper({ children }: {children: React.ReactNode }) {
         setCurrentTimesheet,
     ]);
 
-    if (!bootstrapped) {
-        return <div className="flex items-center justify-center h-screen">Bootsrapper loading...</div>
+    if (!bootstrapped || shouldBlock) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loader className="animate-spin" />    
+            </div>
+        );
     }
 
     return <>{children}</>;

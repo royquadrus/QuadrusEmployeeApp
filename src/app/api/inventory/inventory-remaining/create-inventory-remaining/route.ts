@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
             const supabase = await createServerSupabaseClient();
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .rpc("process_inventory_remaining", {
                     target_work_order_id: parsed.data.work_order_id,
                     target_item_sku: parsed.data.item_sku,

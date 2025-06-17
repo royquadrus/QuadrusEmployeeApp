@@ -18,7 +18,7 @@ export function useCreateInventoryRemaining() {
 
             return data;
         },
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Inventory remaining created");
             queryClient.invalidateQueries({ queryKey: ["inventory-remaining"] });
         },

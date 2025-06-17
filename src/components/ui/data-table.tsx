@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef, ColumnSizing, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, OnChangeFn, Row, RowSelectionState, useReactTable, VisibilityState } from "@tanstack/react-table";
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, OnChangeFn, Row, RowSelectionState, useReactTable, VisibilityState } from "@tanstack/react-table";
 import { useState } from "react";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./dropdown-menu";
 import { Button } from "./button";

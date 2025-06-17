@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useClockOut } from "@/hooks/timeclock/use-clock-out";
+import { useClockOut } from "@/hooks/timeclock/timesheet-entries/use-clock-out";
 import { useTimeclockSessionStore } from "@/lib/stores/use-timeclock-session-store";
 import { useEffect, useState } from "react";
 

@@ -1,6 +1,5 @@
 import { InventoryRemaining } from "@/lib/validation/inventory-remaining"
 import { useQuery } from "@tanstack/react-query"
-import { error } from "console";
 
 export const useGetInventoryRemaining = () => {
     return useQuery<InventoryRemaining[]>({

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const DropdownProjectSchema = z.object({
     project_id: z.coerce.string(),
-    project_number: z.string().optional(),
+    project_number: z.string().nullable().optional(),
     project_name: z.string(),
 }).transform((data) => ({
     project_id: data.project_id,
@@ -16,5 +16,12 @@ export const DropdownTimesheetTaskSchema = z.object({
     task_name: z.string(),
 });
 
+export const DropdownPayPeriodSchema = z.object({
+    pay_period_id: z.string(),
+    start_date: z.string(),
+    end_date: z.string(),
+});
+
 export type Project = z.infer<typeof DropdownProjectSchema>;
 export type TimesheetTask = z.infer<typeof DropdownTimesheetTaskSchema>;
+export type PayPeriod = z.infer<typeof DropdownPayPeriodSchema>;
