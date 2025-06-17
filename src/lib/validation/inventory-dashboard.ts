@@ -24,5 +24,19 @@ export const DashboardInventoryOrderSchema = z.object({
     supplier_name: data.crm_suppliers.supplier_name,
 }));
 
+export const DashboardInventoryStatsSchema = z.object({
+    total_board_feet: z.number().nullable(),
+    total_square_footage: z.number().nullable(),
+});
+
+export const DashboardMonthlyUsageSchema = z.object({
+    mtd_board_feet_used: z.number().nullable(),
+    mtd_sheet_goods_sqft_used: z.number().nullable(),
+    pmtd_board_feet_used: z.number().nullable(),
+    pmtd_sheet_goods_sqft_used: z.number().nullable(),
+});
+
 export type DashboardInventoryOrder = z.infer<typeof DashboardInventoryOrderSchema>;
 export type DashboardInventoryReturn = z.infer<typeof DashboardInventoryReturnSchema>;
+export type DashboardInventoryStats = z.infer<typeof DashboardInventoryStatsSchema>;
+export type DashboardMonthlyUsage = z.infer<typeof DashboardMonthlyUsageSchema>;

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quadrus Ops App",
+  title: "Quadrus Employee App",
   description: "Quadrus Operating System",
 };
 

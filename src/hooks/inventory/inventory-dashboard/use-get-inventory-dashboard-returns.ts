@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export const useGetInventoryDashboardReturns = () => {
     return useQuery<DashboardInventoryReturn[]>({
-        queryKey: ["dashboard-inventory-order"],
+        queryKey: ["dashboard-inventory-return"],
         queryFn: async () => {
             const response = await fetch("/api/inventory/inventory-dashboard/get-todays-inventory-returns");
 
