@@ -6,6 +6,9 @@ import { format } from "date-fns";
 export const DropdownWOrkOrderSchema = z.object({
     work_order_id: z.coerce.string(),
     work_order_number: z.string(),
+    pm_projects: z.object({
+        project_name: z.string(),
+    }),
 });
 
 export const DropdownInventoryItemSchema = z.object({
@@ -64,7 +67,11 @@ export const useDropdownStore = create<DropdownStore>((set, get) => ({
             const payPeriodData = DropdownPayPeriodSchema.array().parse(await payPeriodRes.json());
 
             set ({
-                workOrders: workOrderData.map((c) => ({ id: c.work_order_id, label: c.work_order_number })),
+                //workOrders: workOrderData.map((c) => ({ id: c.work_order_id, label: c.work_order_number })),
+                workOrders: workOrderData.map((w) => ({
+                    id: w.work_order_id,
+                    label: `${w.work_order_number} - ${w.pm_projects.project_name}`,
+                })),
                 inventoryItems: inventoryItemData.map((i) => ({ id: i.item_sku, label: i.item_name })),
                 projects: projectData.map((p) => ({ id: p.project_id, label: p.project_name })),
                 timesheetTasks: timesheetTaskData.map((t) => ({ id: t.timesheet_task_id, label: t.task_name })),
