@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export function LoginForm() {
     const { isLoading, login } = UseAuthLogin();
@@ -20,38 +21,45 @@ export function LoginForm() {
     })
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(login)} className="space-y-4">
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input placeholder="you@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                                <Input type="password" {...field} />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
+        <>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(login)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="you@example.com" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
 
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Signing in..." : "Sign in"}
-                </Button>
-            </form>
-        </Form>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? "Signing in..." : "Sign in"}
+                    </Button>
+                </form>
+            </Form>
+            <p className="mt-4 text-center text-sm text-muted-foreground">
+                <Link href="/forgot-password" className="hover:underline">
+                    Forgot your password?
+                </Link>
+            </p>
+        </>
     );
 }
