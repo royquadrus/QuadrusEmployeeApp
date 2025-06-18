@@ -13,7 +13,14 @@ export async function GET(request: NextRequest) {
 
             const { data, error } = await supabase
                 .from("pm_work_orders")
-                .select("work_order_id, work_order_number")
+                //.select("work_order_id, work_order_number")
+                .select(`
+                    work_order_id,
+                    work_order_number,
+                    pm_projects (
+                        project_name
+                    )
+                `)
                 .filter("work_order_status", "not.in", "(Quoting,Built,Shipped,Completed)");
 
             if (error) throw error;
