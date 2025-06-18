@@ -16,8 +16,6 @@ export async function GET(request: NextRequest) {
             const { data, error } = await supabase
                 .rpc("get_monthly_inventory_usage_stats");
 
-            console.log("API:", data);
-
             if (error) throw error;
 
             const parsed = z.array(DashboardMonthlyUsageSchema).safeParse(data);
