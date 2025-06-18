@@ -22,8 +22,8 @@ export default function ResetPasswordPage() {
   // Extract and validate the token on load
   useEffect(() => {
     const hash = window.location.hash;
-    const params = new URLSearchParams(hash.slice(1));
-    const token = params.get("access_token");
+    const params = new URLSearchParams(hash.substring(1));
+    const token = params.get("refresh_token");
 
     if (!token) {
       setError("Invalid or missing reset token.");
@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
     }
 
     supabase.auth
-      .setSession({ access_token: token, refresh_token: "" })
+      .refreshSession({ refresh_token: token })
       .then(({ error }) => {
         if (error) {
           console.error("Token validation failed:", error);
