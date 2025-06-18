@@ -2,24 +2,22 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuthStore } from "@/lib/stores/use-auth-store";
 import { useAuthSession, useSignOut } from "@/lib/utils/auth-utils";
-import Link from "next/link";
 
 export default function DashboardPage() {
     const { session } = useAuthSession();
+    const { employee } = useAuthStore();
     const signOut = useSignOut();
 
    return (
         <div className="container mx-auto py-8 space-y-8">
-            <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
-                    Welcome,{" "}
-                    {session?.user.user_metadata.full_name || session?.user.email}
+                    Good day,{" "}
+                    {employee.first_name}{" "}{employee.last_name}
                 </h1>
                 <div className="space-x-4">
-                    <Button variant="outline" asChild>
-                        <Link href="/profile">Profile Settings</Link>
-                    </Button>
                     <Button onClick={signOut} variant="outline">
                         Sign out
                     </Button>

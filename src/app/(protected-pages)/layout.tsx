@@ -1,28 +1,20 @@
 "use client";
 
+import { AuthBootstrapper } from "@/components/app/auth-bootstrapper";
 import { MainNav } from "@/components/navigation/main-nav";
-import { useProtectedRoute } from "@/hooks/use-protected-route";
-import { Loader } from "lucide-react";
+import { useEnsureDropdownData } from "@/hooks/use-ensure.dropdown-data";
 
 export default function ProtectedLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const { isLoading } = useProtectedRoute();
-
-    if (isLoading) {
-        return (
-            <div className="flex h-screen w-screen items-center justify-center">
-                <Loader className="animate-spin" />
-            </div>
-        );
-    }
+    useEnsureDropdownData();
 
     return (
-        <div className="min-h-screen bg-background">
+        <AuthBootstrapper>
             <MainNav />
             <main>{children}</main>
-        </div>
+        </AuthBootstrapper>        
     );
 }

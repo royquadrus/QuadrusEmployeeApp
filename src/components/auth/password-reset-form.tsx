@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthReset } from "@/hooks/use-auth-reset";
+import { useAuthReset } from "@/hooks/auth/use-auth-reset";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/lib/validation/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

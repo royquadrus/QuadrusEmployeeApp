@@ -9,16 +9,19 @@ export function useSignOut() {
     const supabase = createClientSupabaseClient();
 
     const signOut = useCallback(async () => {
+        setLoading(true);
+
         try {
-            setLoading(true);
-            await supabase.auth.signOut();
-            clearSession();
-            router.replace("/login");
-            router.refresh();
-        } catch (error) {
-            console.error("Error signing out:", error);
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Supabase signout error:", error.message);
+            }
+        } catch (err) {
+            console.error("Unexpected error signing out:", err);
         } finally {
+            clearSession();
             setLoading(false);
+            router.replace("/login");
         }
     }, [supabase, clearSession, setLoading, router]);
 
@@ -26,10 +29,15 @@ export function useSignOut() {
 }
 
 export function useAuthSession() {
-    const { user, isLoading } = useAuthStore();
+    const { user, employee, isLoading, bootstrapped } = useAuthStore();
+
+    const session = user ? { user, employee } : null;
 
     return {
-        session: user ? { user } : null,
+        session,
+        user,
+        employee,
         isLoading,
+        bootstrapped,
     };
 }

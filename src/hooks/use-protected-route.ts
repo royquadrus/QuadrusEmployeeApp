@@ -8,14 +8,23 @@ interface UseProtectedRouteOptions {
 
 export function useProtectedRoute(options: UseProtectedRouteOptions = {}) {
     const { redirectTo = '/login' } = options
-    const { user, isLoading } = useAuthStore()
+    const { user, isLoading, bootstrapped } = useAuthStore()
     const router = useRouter()
 
-    useEffect(() => {
-        if (!isLoading && !user) {
-            router.replace(redirectTo)
-        }
-    }, [user, isLoading, redirectTo, router])
+    const shouldBlock = isLoading || !bootstrapped || !user;
 
-    return { isLoading, user }
+    useEffect(() => {
+        if (!bootstrapped || isLoading) return;
+
+        if (!user) {
+            const timeout = setTimeout(() => {
+                router.replace(redirectTo)
+            }, 50);
+            //router.replace(redirectTo)
+
+            return () => clearTimeout(timeout);
+        }
+    }, [user, isLoading, redirectTo, router, bootstrapped])
+
+    return { isLoading, bootstrapped, user, shouldBlock }
 }
