@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
         setSubmitting(true);
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "https://employees-dev.quadrusconstruction.com/reset-password",
+            redirectTo: "https://employees.quadrusconstruction.com/reset-password",
         });
 
         if (error) {
