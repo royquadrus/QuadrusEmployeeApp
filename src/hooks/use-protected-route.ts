@@ -14,8 +14,15 @@ export function useProtectedRoute(options: UseProtectedRouteOptions = {}) {
     const shouldBlock = isLoading || !bootstrapped || !user;
 
     useEffect(() => {
-        if (!isLoading && bootstrapped && !user) {
-            router.replace(redirectTo)
+        if (!bootstrapped || isLoading) return;
+
+        if (!user) {
+            const timeout = setTimeout(() => {
+                router.replace(redirectTo)
+            }, 50);
+            //router.replace(redirectTo)
+
+            return () => clearTimeout(timeout);
         }
     }, [user, isLoading, redirectTo, router, bootstrapped])
 

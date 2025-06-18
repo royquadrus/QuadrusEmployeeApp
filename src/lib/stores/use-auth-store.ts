@@ -17,7 +17,7 @@ interface AuthState {
     setUser: (user: User | null) => void;
     setEmployee: (employee: EmployeeInfo | null) => void;
     setLoading: (isLoading: boolean) => void
-    setBootstrapped: (bootstrapped: boolean) => void;
+    setBootstrapped: (value: boolean | ((prev: boolean) => boolean)) => void;
     clearSession: () => void
 }
 
@@ -31,7 +31,14 @@ export const useAuthStore = create<AuthState>()(
             setUser: (user) => set({ user }),
             setEmployee: (employee) => set({ employee }),
             setLoading: (isLoading) => set({ isLoading }),
-            setBootstrapped: (bootstrapped) => set({ bootstrapped }),
+            //setBootstrapped: (bootstrapped) => set({ bootstrapped }),
+            setBootstrapped: (valueOrUpdater) =>
+                set((state) => ({
+                    bootstrapped:
+                        typeof valueOrUpdater === "function"
+                            ? valueOrUpdater(state.bootstrapped)
+                            : valueOrUpdater,
+                })),
             clearSession: () => {
                 set({
                     user: null,
